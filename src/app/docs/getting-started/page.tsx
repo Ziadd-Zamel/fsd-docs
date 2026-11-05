@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { docsPageMetadata } from "@/lib/metadata";
 import Link from "next/link";
 import { CodeBlock } from "@/components/docs/code-block";
 import { DocumentationVideo } from "@/components/docs/documentation-video";
 import { PackageManagerCommand } from "@/components/docs/package-manager-command";
 import { GETTING_STARTED_VIDEO_PAGE_KEY } from "@/lib/documentation-videos";
+import { docsPageMetadata } from "@/lib/metadata";
 import { getPublishedDocumentationVideo } from "@/lib/published-videos";
 
 export const metadata: Metadata = docsPageMetadata({
