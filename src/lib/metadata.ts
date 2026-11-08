@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import { lastCommitDate, pageSourceFile } from "@/lib/page-dates";
-import { siteConfig } from "@/lib/site";
+import { siteConfig } from "./site.ts";
 
 // Next.js replaces nested metadata objects instead of merging them, so any
 // page that defines its own openGraph or twitter must repeat the image.
@@ -26,6 +25,8 @@ type PageMetadataInput = {
   alternates?: Omit<NonNullable<Metadata["alternates"]>, "canonical">;
   /** Absolute share title; defaults to `${title} | FSD CLI`. */
   shareTitle?: string;
+  /** Share-card description; defaults to `description`. */
+  shareDescription?: string;
   locale?: string;
 };
 
@@ -43,6 +44,7 @@ export function pageMetadata({
   modifiedTime,
   alternates,
   shareTitle = `${title} | ${siteConfig.name}`,
+  shareDescription = description,
   locale = "en_US",
 }: PageMetadataInput): Metadata {
   return {
@@ -58,7 +60,7 @@ export function pageMetadata({
       url: path,
       siteName: siteConfig.name,
       title: shareTitle,
-      description,
+      description: shareDescription,
       images: [defaultOgImage],
       ...(type === "article" && publishedTime ? { publishedTime } : {}),
       ...(type === "article" && modifiedTime ? { modifiedTime } : {}),
@@ -66,29 +68,24 @@ export function pageMetadata({
     twitter: {
       card: "summary_large_image",
       title: shareTitle,
-      description,
+      description: shareDescription,
       images: [defaultOgImage],
     },
   };
 }
 
 /**
- * Docs/release pages: article OG type + last-commit modified time when available.
- * Only set publishedTime when the caller provides it (e.g. release notes); never
- * treat the latest edit as the original publication date.
+ * Docs/release pages: article OG type.
+ * Timestamps are caller-provided only (e.g. release notes). Do not derive them
+ * from page.tsx git history — metadata edits would reset every page's dates.
  */
 export function docsPageMetadata(
   input: Omit<PageMetadataInput, "type"> & { type?: "article" },
 ): Metadata {
-  const file = pageSourceFile(input.path);
-  const modified = file ? lastCommitDate(file) : null;
-  const modifiedTime =
-    input.modifiedTime ?? (modified ? modified.toISOString() : undefined);
-
   return pageMetadata({
     ...input,
     type: "article",
     publishedTime: input.publishedTime,
-    modifiedTime,
+    modifiedTime: input.modifiedTime,
   });
 }
