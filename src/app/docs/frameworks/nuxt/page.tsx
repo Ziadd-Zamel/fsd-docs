@@ -45,8 +45,8 @@ export default function NuxtFrameworkPage() {
         >
           Create a Nuxt project
         </h2>
-        <CodeBlock code="npx create-fsd-architecture@latest@latest my-nuxt-app --framework nuxt" />
-        <CodeBlock code="npx create-fsd-architecture@latest@latest my-nuxt-app --framework nuxt --yes" />
+        <CodeBlock code="npx create-fsd-architecture@latest my-nuxt-app --framework nuxt" />
+        <CodeBlock code="npx create-fsd-architecture@latest my-nuxt-app --framework nuxt --yes" />
         <p className="text-sm leading-relaxed text-body-muted">
           The interactive command lets you choose Axios or native Fetch and
           enable or disable Vue Query, Pinia, and forms. <code>--yes</code> uses
@@ -131,7 +131,7 @@ app/app/routes/account.vue  # exposes /account`}
         </p>
       </section>
 
-      <section className="mt-10 grid gap-4 md:grid-cols-2">
+      <section className="mt-10 grid gap-4 grid-cols-1 md:grid-cols-2">
         <div className="rounded-2xl border border-hairline bg-canvas p-5">
           <h2
             id="runtime-api-config"
